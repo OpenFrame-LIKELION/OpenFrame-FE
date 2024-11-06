@@ -7,45 +7,17 @@ import toggleOn from "../../assets/svg/toggle-on.svg";
 import toggleOff from "../../assets/svg/toggle-off.svg";
 import { repositionNodes } from "../../utils/graphUtils";
 import useTreeGraph from "../../hooks/useTreeGraph";
+import useZoomAndPan from "../../hooks/useZoomAndPan";
 
 function TreeGraph({ selectedNode, setSelectedNode }) {
-    const stageRef = useRef(null);
+    const [hoveredNode, setHoveredNode] = useState(null);
+    const { stageRef, scale, position, handleWheel } = useZoomAndPan();
+    const { nodes, links, addChildNode, setNodes } = useTreeGraph(selectedNode);
+
     const [addImage] = useImage(add);
     const [addWhiteImage] = useImage(addWhite);
     const [on] = useImage(toggleOn);
     const [off] = useImage(toggleOff);
-    const [scale, setScale] = useState(1);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [hoveredNode, setHoveredNode] = useState(null);
-    const { nodes, links, addChildNode, setNodes } = useTreeGraph(selectedNode);
-
-    const handleWheel = (e) => {
-        e.evt.preventDefault();
-
-        const scaleBy = 1.1;
-        const stage = stageRef.current;
-        const oldScale = stage.scaleX();
-
-        const mousePointTo = {
-            x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-            y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
-        };
-
-        const direction = e.evt.deltaY < 0 ? 1 : -1;
-
-        const newScale =
-            direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-
-        setScale(newScale);
-        setPosition({
-            x:
-                -(mousePointTo.x - stage.getPointerPosition().x / newScale) *
-                newScale,
-            y:
-                -(mousePointTo.y - stage.getPointerPosition().y / newScale) *
-                newScale,
-        });
-    };
 
     return (
         <Stage

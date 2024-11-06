@@ -1,17 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Group, Image, Layer, Path, Rect, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import add from "../../assets/svg/add.svg";
 import addWhite from "../../assets/svg/add-white.svg";
 import toggleOn from "../../assets/svg/toggle-on.svg";
 import toggleOff from "../../assets/svg/toggle-off.svg";
-import {
-    initContext,
-    initNodesWidth,
-    repositionNodes,
-    resizeNodeWidth,
-} from "../../utils/graphUtils";
-import Node from "../../config/Node";
+import { repositionNodes } from "../../utils/graphUtils";
+import useTreeGraph from "../../hooks/useTreeGraph";
 
 function TreeGraph({ selectedNode, setSelectedNode }) {
     const stageRef = useRef(null);
@@ -21,60 +16,8 @@ function TreeGraph({ selectedNode, setSelectedNode }) {
     const [off] = useImage(toggleOff);
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [nodes, setNodes] = useState([]);
-    const [links, setLinks] = useState([]);
     const [hoveredNode, setHoveredNode] = useState(null);
-
-    useEffect(() => {
-        const parent = new Node(
-            1,
-            "반응형 주제 문장",
-            100,
-            305,
-            133,
-            50,
-            null,
-            []
-        );
-        const initialNodes = [parent];
-        const initialLinks = [];
-        initContext();
-        initNodesWidth(initialNodes);
-        setNodes(initialNodes);
-        setLinks(initialLinks);
-    }, []);
-
-    // Function to add a new child node to the selected node
-    const addChildNode = (count = 5) => {
-        if (!selectedNode) return;
-
-        const newNodes = [...nodes];
-        const newLinks = [...links];
-
-        for (let i = 0; i < count; i++) {
-            const newChild = new Node(
-                newNodes.length + 1,
-                `관련/중립/반대 문장 ${i + 1}`,
-                selectedNode.x + selectedNode.width + 20,
-                selectedNode.y + selectedNode.height + 20 * (i + 1),
-                100,
-                50,
-                selectedNode,
-                []
-            );
-
-            resizeNodeWidth(newChild);
-            selectedNode.addChild(newChild);
-
-            newNodes.push(newChild);
-            newLinks.push({ source: selectedNode, target: newChild });
-        }
-
-        repositionNodes(selectedNode, 0, null);
-
-        setNodes([...newNodes]); // 상태 업데이트
-        setLinks([...newLinks]);
-    };
+    const { nodes, links, addChildNode, setNodes } = useTreeGraph(selectedNode);
 
     const handleWheel = (e) => {
         e.evt.preventDefault();

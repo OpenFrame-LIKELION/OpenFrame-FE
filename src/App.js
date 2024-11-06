@@ -1,54 +1,21 @@
-import React, { useEffect, useState } from "react";
-import TreeGraph from "./components/Graph/TreeGraph";
-import styled, { ThemeProvider } from "styled-components";
+import React from "react";
+import { ThemeProvider } from "styled-components";
 import theme from "./config/theme";
-import { LogoIcon } from "./assets/icon/Icons";
-import SearchBar from "./components/Common/SearchBar";
-import IndexBar from "./components/Common/IndexBar";
-import OnBoarding from "./components/Common/OnBoarding";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
-    const [selectedNode, setSelectedNode] = useState(null);
-    const [isAssetLoaded, setIsAssetLoaded] = useState(false);
-
-    useEffect(() => {
-        // 5초 대기
-        setTimeout(() => {
-            setIsAssetLoaded(true);
-        }, 500);
-    }, []);
-
-    return isAssetLoaded ? (
+    return (
         <ThemeProvider theme={theme}>
-            <Logo>
-                <LogoIcon color="#1D4ED8" />
-                <SearchBar />
-            </Logo>
-            <IndexBar selectedNodeId={selectedNode ? selectedNode.id : null} />
-            <TreeGraph
-                selectedNode={selectedNode}
-                setSelectedNode={setSelectedNode}
-            />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                </Routes>
+            </BrowserRouter>
         </ThemeProvider>
-    ) : (
-        <OnBoarding />
     );
 }
 
 export default App;
-
-const Logo = styled.div`
-    position: absolute;
-    top: 72px;
-    left: calc(50%);
-    transform: translateX(-50%);
-    z-index: 10;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 17px;
-
-    width: 100%;
-`;

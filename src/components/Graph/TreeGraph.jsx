@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Group, Image, Layer, Path, Rect, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import add from "../../assets/svg/add.svg";

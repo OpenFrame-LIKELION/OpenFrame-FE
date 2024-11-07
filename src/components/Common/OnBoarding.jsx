@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LogoBig, LogoIcon } from "../../assets/icon/Icons";
+import { LogoBig } from "../../assets/icon/Icons";
 
 const OnBoarding = () => {
     return (

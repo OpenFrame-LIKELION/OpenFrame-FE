@@ -3,9 +3,20 @@ import { LogoMedium } from "../assets/icon/Icons";
 import { ReactComponent as LoginGoogle } from "../assets/svg/login-google.svg";
 import NodeSlider from "../components/Common/NodeSlider";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginState } from "../shared/recoil/authAtom";
+import { useEffect } from "react";
 
 function LoginPage() {
     const navigate = useNavigate();
+    const [login, setLogin] = useRecoilState(loginState);
+
+    useEffect(() => {
+        if (login) {
+            navigate("/");
+        }
+    }, [login, navigate]);
+
     return (
         <Container>
             <LogoMedium />
@@ -13,7 +24,7 @@ function LoginPage() {
             <NodeSlider />
             <LoginGoogle
                 onClick={() => {
-                    navigate("/");
+                    setLogin(true);
                 }}
                 cursor={"pointer"}
             />

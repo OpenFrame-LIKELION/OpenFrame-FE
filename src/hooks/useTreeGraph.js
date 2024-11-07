@@ -10,25 +10,40 @@ import {
 const useTreeGraph = (selectedNode) => {
     const [nodes, setNodes] = useState([]);
     const [links, setLinks] = useState([]);
+    const [draw, setDraw] = useState(false);
 
     useEffect(() => {
-        const parent = new Node(
-            1,
-            "반응형 주제 문장",
-            100,
-            305,
-            133,
-            50,
-            null,
-            []
-        );
-        const initialNodes = [parent];
-        const initialLinks = [];
+        const parent = new Node(1, "", 0, 0, 0, 0, null, []);
         initContext();
-        initNodesWidth(initialNodes);
-        setNodes(initialNodes);
-        setLinks(initialLinks);
+        resizeNodeWidth(parent);
+
+        setTimeout(() => {
+            setDraw(true);
+        }, 400);
     }, []);
+
+    useEffect(() => {
+        if (draw) {
+            const parent = new Node(
+                1,
+                "반응형 주제 문장",
+                100,
+                305,
+                0,
+                0,
+                null,
+                []
+            );
+            const nodes = [parent];
+            const links = [];
+
+            initNodesWidth(nodes);
+            repositionNodes(nodes[0], 0, null);
+
+            setNodes(nodes);
+            setLinks(links);
+        }
+    }, [draw]);
 
     const addChildNode = (count = 5) => {
         if (!selectedNode) return;
@@ -61,7 +76,7 @@ const useTreeGraph = (selectedNode) => {
         setLinks([...newLinks]);
     };
 
-    return { nodes, links, addChildNode, setNodes };
+    return { draw, nodes, links, addChildNode, setNodes };
 };
 
 export default useTreeGraph;

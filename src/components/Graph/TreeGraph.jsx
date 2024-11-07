@@ -6,13 +6,18 @@ import addWhite from "../../assets/svg/add-white.svg";
 import toggleOn from "../../assets/svg/toggle-on.svg";
 import toggleOff from "../../assets/svg/toggle-off.svg";
 import { repositionNodes } from "../../utils/graphUtils";
-import useTreeGraph from "../../hooks/useTreeGraph";
 import useZoomAndPan from "../../hooks/useZoomAndPan";
 
-function TreeGraph({ selectedNode, setSelectedNode }) {
+function TreeGraph({
+    selectedNode,
+    setSelectedNode,
+    nodes,
+    links,
+    addChildNode,
+    setNodes,
+}) {
     const [hoveredNode, setHoveredNode] = useState(null);
     const { stageRef, scale, position, handleWheel } = useZoomAndPan();
-    const { nodes, links, addChildNode, setNodes } = useTreeGraph(selectedNode);
 
     const [addImage] = useImage(add);
     const [addWhiteImage] = useImage(addWhite);

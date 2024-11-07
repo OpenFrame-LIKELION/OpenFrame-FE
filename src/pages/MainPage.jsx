@@ -8,12 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginState } from "../shared/recoil/authAtom";
 import OnBoarding from "../components/Common/OnBoarding";
+import useTreeGraph from "../hooks/useTreeGraph";
 
 const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [login] = useRecoilState(loginState);
     const navigate = useNavigate();
+    const { draw, nodes, links, addChildNode, setNodes } =
+        useTreeGraph(selectedNode);
 
     useEffect(() => {
         if (!login) {
@@ -21,15 +23,7 @@ const MainPage = () => {
         }
     }, [login, navigate]);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-    }, []);
-
-    return isLoading ? (
-        <OnBoarding />
-    ) : (
+    return draw ? (
         <>
             <Logo>
                 <LogoIcon color="#1D4ED8" />
@@ -39,8 +33,14 @@ const MainPage = () => {
             <TreeGraph
                 selectedNode={selectedNode}
                 setSelectedNode={setSelectedNode}
+                nodes={nodes}
+                links={links}
+                addChildNode={addChildNode}
+                setNodes={setNodes}
             />
         </>
+    ) : (
+        <OnBoarding />
     );
 };
 

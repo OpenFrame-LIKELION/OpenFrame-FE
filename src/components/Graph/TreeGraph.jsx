@@ -7,6 +7,7 @@ import toggleOn from "../../assets/svg/toggle-on.svg";
 import toggleOff from "../../assets/svg/toggle-off.svg";
 import { repositionNodes } from "../../utils/graphUtils";
 import useZoomAndPan from "../../hooks/useZoomAndPan";
+import BackGroundLayer from "./BackGroundLayer";
 
 function TreeGraph({
     selectedNode,
@@ -17,6 +18,7 @@ function TreeGraph({
     setNodes,
 }) {
     const [hoveredNode, setHoveredNode] = useState(null);
+    const [memoedNode, setMemoedNode] = useState(null);
     const { stageRef, scale, position, handleWheel } = useZoomAndPan();
 
     const [addImage] = useImage(add);
@@ -44,6 +46,10 @@ function TreeGraph({
             onDragStart={(e) => {}}
             onDragEnd={(e) => {}}
         >
+            <BackGroundLayer
+                setSelectedNode={setSelectedNode}
+                setMemoedNode={setMemoedNode}
+            />
             <Layer>
                 {links.map((link, i) => {
                     const parent = link.source;
@@ -171,7 +177,34 @@ function TreeGraph({
                                 />
                             )}
                             {(hoveredNode === node || node.isRoot()) && (
-                                <Group id={`children-memo ${i}`}>
+                                <Group
+                                    id={`children-memo ${i}`}
+                                    onClick={(e) => {
+                                        setMemoedNode(node);
+                                        e.target
+                                            .getStage()
+                                            .container().style.cursor = "text";
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (memoedNode === node) {
+                                            e.target
+                                                .getStage()
+                                                .container().style.cursor =
+                                                "text";
+                                        } else {
+                                            e.target
+                                                .getStage()
+                                                .container().style.cursor =
+                                                "pointer";
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target
+                                            .getStage()
+                                            .container().style.cursor =
+                                            "default";
+                                    }}
+                                >
                                     <Rect
                                         width={node.memoWidth + 15}
                                         height={node.memoHeight}
@@ -201,13 +234,15 @@ function TreeGraph({
                                         fill="#BFC6DD"
                                         verticalAlign="middle"
                                     />
-                                    <Image
-                                        x={node.x + node.memoWidth - 8}
-                                        y={node.y + node.height + 10 + 8}
-                                        image={addWhiteImage}
-                                        width={12}
-                                        height={12}
-                                    />
+                                    {memoedNode !== node && (
+                                        <Image
+                                            x={node.x + node.memoWidth - 8}
+                                            y={node.y + node.height + 10 + 8}
+                                            image={addWhiteImage}
+                                            width={12}
+                                            height={12}
+                                        />
+                                    )}
                                 </Group>
                             )}
                         </Group>
@@ -249,6 +284,13 @@ function TreeGraph({
                                         letterSpacing={-1.0}
                                         fill="#1D4ED8"
                                         verticalAlign="middle"
+                                    />
+                                    <Rect
+                                        x={node.x + node.width + 10}
+                                        y={node.y + node.height / 2 - 6}
+                                        width={90}
+                                        height={12}
+                                        fill="transparent"
                                         onClick={(e) => {
                                             setSelectedNode(node);
                                             e.target

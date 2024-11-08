@@ -7,7 +7,7 @@ import { Html } from "react-konva-utils";
 const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
     const [addWhiteImage] = useImage(addWhite);
     const [isEditing, setIsEditing] = useState(false);
-    const [memoText, setMemoText] = useState(node.memo || "메모 추가");
+    const [memoText, setMemoText] = useState(node.memo || "");
 
     const handleMemoClick = () => {
         setMemoedNode(node);
@@ -22,6 +22,7 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
         if (e.key === "Enter") {
             e.preventDefault();
             setIsEditing(false);
+            setMemoedNode(null);
             node.memo = memoText;
         }
     };
@@ -67,7 +68,7 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
                     y={node.y + node.height + 6.5}
                     width={node.memoWidth}
                     height={node.memoHeight}
-                    text={memoText}
+                    text={memoText === "" ? "메모 추가" : memoText}
                     fontSize={12}
                     fontFamily="Gothic A1"
                     fontStyle="600"

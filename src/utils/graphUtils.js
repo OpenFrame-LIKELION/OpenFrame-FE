@@ -1,3 +1,6 @@
+import CustomNode from "../components/Graph/CustomNode";
+import NodeLine from "../components/Graph/NodeLine";
+
 const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
 
@@ -107,6 +110,68 @@ const initNodesWidth = (nodes) => {
     }
 };
 
+const connectNodes = ({ links, hoveredNode }) => {
+    return links.map((link, i) => {
+        const parent = link.source;
+        const child = link.target;
+        const isHovered = (hoveredNode && hoveredNode.id === child.id) || false;
+
+        if (!parent || !child) return null; // Ensure both nodes exist
+        if (child !== parent.children[0] && child !== parent.lastChild()) {
+            return null;
+        }
+
+        // Calculate start and end points for the path
+        const startX = parent.x + parent.width + 10;
+        const startY = parent.y + parent.height / 2;
+        const endX = child.x - 10;
+        const endY =
+            child === parent.lastChild()
+                ? child.y + child.height + (isHovered ? child.memoHeight : 0)
+                : child.y;
+
+        return (
+            <NodeLine
+                key={`link-${i}`}
+                index={i}
+                startX={startX}
+                startY={startY}
+                endX={endX}
+                endY={endY}
+            />
+        );
+    });
+};
+
+const printNodes = ({
+    nodes,
+    hoveredNode,
+    memoedNode,
+    selectedNode,
+    setNodes,
+    setHoveredNode,
+    setMemoedNode,
+    setSelectedNode,
+    addChildNode,
+}) => {
+    return nodes.map((node, i) => (
+        <CustomNode
+            key={`node-${i}`}
+            index={i}
+            node={node}
+            setHoveredNode={setHoveredNode}
+            hoveredNode={hoveredNode}
+            setSelectedNode={setSelectedNode}
+            setNodes={setNodes}
+            nodes={nodes}
+            setMemoedNode={setMemoedNode}
+            memoedNode={memoedNode}
+            addChildNode={addChildNode}
+            selectedNode={selectedNode}
+        />
+    ));
+};
+
 export {
     calculateNodeSize,
     repositionNodes,
@@ -114,4 +179,6 @@ export {
     initNodesWidth,
     resizeNodeWidth,
     initContext,
+    connectNodes,
+    printNodes,
 };

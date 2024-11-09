@@ -3,6 +3,15 @@ import useImage from "use-image";
 import addWhite from "../../assets/svg/add-white.svg";
 import { useState } from "react";
 import { Html } from "react-konva-utils";
+import { rgb } from "d3";
+
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d");
+
+context.font = "12px 'Gothic A1'"; // 텍스트 크기와 스타일을 설정
+context.fontWeight = "600";
+context.letterSpacing = "-1.0px";
+context.lineHeight = 1.3;
 
 const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
     const [addWhiteImage] = useImage(addWhite);
@@ -16,6 +25,7 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
 
     const handleInputChange = (e) => {
         setMemoText(e.target.value);
+        resizeMemoWidth(node, e.target.value);
     };
 
     const handleKeyDown = (e) => {
@@ -30,6 +40,22 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
     const handleBlur = () => {
         setIsEditing(false);
         node.memo = memoText;
+    };
+
+    const resizeMemoWidth = (node, text) => {
+        const maxWidth = node.width - 15;
+        node.memoWidth = context.measureText(text).width + 26;
+        if (node.memoWidth > maxWidth) {
+            let lines = Math.ceil(node.memoWidth / maxWidth);
+            node.memoWidth = maxWidth;
+            node.memoHeight = Math.ceil(18 * lines + 26);
+        } else {
+            node.memoHeight = 35;
+        }
+        if (node.memoHeight < 35) {
+            node.memoHeight = 35;
+        }
+        node.memoWidth = node.memoWidth < 72 ? 72 : node.memoWidth;
     };
 
     return (
@@ -65,8 +91,8 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
             {!isEditing ? (
                 <Text
                     x={node.x + 13}
-                    y={node.y + node.height + 6.5}
-                    width={node.memoWidth}
+                    y={node.y + node.height + 16}
+                    width={node.memoWidth - 12}
                     height={node.memoHeight}
                     text={memoText === "" ? "메모 추가" : memoText}
                     fontSize={12}
@@ -74,14 +100,14 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
                     fontStyle="600"
                     lineHeight={1.3}
                     letterSpacing={-1.0}
-                    fill="#BFC6DD"
-                    verticalAlign="middle"
+                    fill={memoText === "" ? "#BFC6DD" : "#444751"}
+                    wrap="char"
                 />
             ) : (
                 <Html
                     groupProps={{
-                        x: node.x + 13,
-                        y: node.y + node.height + 16.5,
+                        x: node.x,
+                        y: node.y + node.height + 6.5,
                     }}
                     divProps={{ style: { opacity: 1, pointerEvents: "auto" } }}
                 >
@@ -91,25 +117,26 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
                         onKeyDown={handleKeyDown}
                         onBlur={handleBlur}
                         style={{
-                            width: `${node.memoWidth}px`,
-                            height: `${node.memoHeight}px`,
+                            width: `${node.memoWidth - 13}px`,
+                            height: `${node.memoHeight - 20}px`,
                             fontSize: "12px",
                             fontFamily: "Gothic A1",
                             fontWeight: "600",
                             lineHeight: "1.3",
                             letterSpacing: "-1px",
                             color: "#444751",
-                            padding: "0",
-                            border: "none",
+                            border: "1px solid #BFC6DD",
+                            borderRadius: "0 10px 10px 10px",
                             outline: "none",
                             resize: "none",
-                            background: "transparent",
+                            background: "#ffffff",
+                            padding: "9px 13px",
                         }}
                         autoFocus
                     />
                 </Html>
             )}
-            {memoedNode !== node && (
+            {node.memo === "" && memoedNode !== node && (
                 <Image
                     x={node.x + node.memoWidth - 8}
                     y={node.y + node.height + 10 + 8}

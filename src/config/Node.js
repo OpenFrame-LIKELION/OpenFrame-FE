@@ -13,7 +13,7 @@ class Node {
         this.childrenWidth = 0;
         this.childPosition = 0;
         this.checked = false;
-        this.memo = null;
+        this.memo = "";
         this.memoWidth = 72;
         this.memoHeight = 35;
     }

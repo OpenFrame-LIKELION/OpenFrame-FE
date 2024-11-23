@@ -52,8 +52,6 @@ const SearchInput = styled.input`
     font-weight: ${({ theme }) => theme.fonts.english.semiBold.weight};
     color: #444751;
     line-height: 1.3;
-    letter-spacing: ${({ theme }) =>
-        theme.fonts.english.semiBold.letterSpacing};
 
     &::placeholder {
         color: #444751;

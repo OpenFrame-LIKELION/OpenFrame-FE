@@ -4,14 +4,22 @@ import Exit from "../../assets/svg/exit.svg?react";
 import Settings from "../../assets/svg/settings.svg?react";
 import userPofile from "../../assets/svg/profile.png";
 import Toggle from "../../assets/svg/toggle-on.svg?react";
+import Left from "../../assets/svg/left.svg?react";
+import Right from "../../assets/svg/right.svg?react";
+import { useState } from "react";
 
 const IndexBar = ({ selectedNodeId }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const handleContainerClick = () => {
+        setIsExpanded((prev) => !prev);
+    };
     return (
-        <Wrapper>
-            <Container>
+        <Wrapper isExpanded={isExpanded}>
+            <Container onClick={handleContainerClick}>
                 <IndexLogo>
                     <BookmarkIcon />
-                    <span>IndexBar</span>
+                    <span>Index</span>
                 </IndexLogo>
                 <Divider />
                 <span>Thesis Count: {selectedNodeId || 0}</span>
@@ -20,25 +28,33 @@ const IndexBar = ({ selectedNodeId }) => {
                 <LeftSection>
                     <img src={userPofile} alt="User Profile" />
                     <div className="user-info">
-                        <div>홍길동</div>
+                        <div className="name">홍길동 님</div>
                         <div>cho@example.com</div>
-                        <div>카카오: 홍길동2</div>
+                        <div>카카오 계정 로그인</div>
                     </div>
                     <div className="user-actions">
-                        <Exit />
-                        <Settings />
+                        <div>
+                            <Exit /> 로그아웃
+                        </div>
+                        <div>
+                            <Settings /> 환경 설정
+                        </div>
                     </div>
                 </LeftSection>
                 <RightSection>
                     <NodeWrapper>
                         {Array.from({ length: 12 }).map((_, index) => (
-                            <NodeContainer>
+                            <NodeContainer key={index}>
                                 {index + 1}
-                                <Toggle width={16} height={16} />
+                                <Toggle width={15.22} height={15.22} />
                             </NodeContainer>
                         ))}
                     </NodeWrapper>
-                    <div>left 3/4 right</div>
+                    <div className="index">
+                        <Left width={12.35} height={20} />
+                        <div>3/4</div>
+                        <Right width={12.35} height={20} />
+                    </div>
                 </RightSection>
             </Container2>
         </Wrapper>
@@ -49,10 +65,11 @@ export default IndexBar;
 
 const NodeContainer = styled.div`
     background-color: white;
-    padding: 11.5px 13px;
+    padding: 15px;
     border-radius: 10px;
     font-size: 15px;
     width: 412px;
+    height: 45.22px;
 
     display: flex;
     justify-content: space-between;
@@ -60,6 +77,26 @@ const NodeContainer = styled.div`
     border: 1px solid #bfc6dd;
 
     box-sizing: border-box;
+
+    // 화면 크기
+    // 1280px 이하: 1개
+    // 1280px 이상: 3개
+    // 1920px 이상: 4개
+    @media (max-width: 1550px) {
+        width: 350px;
+    }
+
+    @media (max-width: 1350px) {
+        width: 300px;
+    }
+
+    @media (max-width: 1220px) {
+        width: 250px;
+    }
+
+    @media (max-width: 1050px) {
+        width: 180px;
+    }
 `;
 
 const Container2 = styled.div`
@@ -68,7 +105,6 @@ const Container2 = styled.div`
     border-radius: 25px 25px 0 0;
 
     display: flex;
-    gap: 20px;
     box-shadow: 0px 4px 10.3px rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(5px);
 `;
@@ -76,27 +112,43 @@ const Container2 = styled.div`
 const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 200px;
-    gap: 15px;
+    line-height: 1.3;
+    letter-spacing: calc(-0.03em);
+    font-size: 12px;
+    margin-right: 56px;
 
     img {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
     }
 
     .user-info {
-        font-size: 14px;
-        color: #444751;
-        text-align: center;
+        margin-top: 20px;
+
+        div {
+            margin-top: 5px;
+        }
+
+        .name {
+            font-size: 15px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
     }
 
     .user-actions {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 10px;
+        gap: 20px;
+        margin-top: 56px;
+
+        div {
+            letter-spacing: calc(-0.07em);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         svg {
             width: 24px;
@@ -121,11 +173,27 @@ const RightSection = styled.div`
     gap: 14px;
     flex-direction: column;
     align-items: end;
+
+    .index {
+        display: flex;
+        gap: 19.33px;
+        align-items: center;
+
+        div {
+            font-size: 15px;
+            letter-spacing: calc(-0.03em);
+            margin-top: 3px;
+        }
+
+        svg {
+            cursor: pointer;
+        }
+    }
 `;
 
 const Wrapper = styled.div`
     position: absolute;
-    bottom: 500px;
+    bottom: 0px;
     z-index: 10;
     left: calc(50%);
     transform: translateX(-50%);
@@ -139,8 +207,14 @@ const Wrapper = styled.div`
     font-weight: ${({ theme }) => theme.fonts.english.semiBold.weight};
     color: #444751;
     line-height: 1.3;
-    letter-spacing: ${({ theme }) =>
-        theme.fonts.english.semiBold.letterSpacing};
+    letter-spacing: calc(-0.07em);
+
+    transform: ${({ isExpanded }) =>
+        isExpanded
+            ? "translateY(0px) translateX(-50%);"
+            : "translateY(330px) translateX(-50%);"};
+
+    transition: transform 0.3s;
 `;
 
 const Container = styled.div`
@@ -155,6 +229,7 @@ const Container = styled.div`
 
     box-shadow: 0px 4px 10.3px rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(5px);
+    cursor: pointer;
 `;
 
 const IndexLogo = styled.div`

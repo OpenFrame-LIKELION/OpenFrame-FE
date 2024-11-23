@@ -76,7 +76,7 @@ const Container = styled.div`
 
     font-weight: 600;
     line-height: 1.3;
-    letter-spacing: -0.1px;
+    letter-spacing: calc(-0.07em);
 
     p {
         margin: 0;

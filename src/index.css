@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Gothic A1";
+    src: url("./assets/fonts/GothicA1-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Gothic A1 SemiBold */
+@font-face {
+    font-family: "Gothic A1";
+    src: url("./assets/fonts/GothicA1-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+body {
+    margin: 0;
+    font-family: "Gothic A1", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}

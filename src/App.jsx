@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import { RecoilRoot } from "recoil";
-import TokenManager from "./utils/tokenManager";
+import TokenManager from "./utils/TokenManager";
 
 function App() {
     return (

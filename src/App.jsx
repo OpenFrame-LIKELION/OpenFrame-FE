@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import { RecoilRoot } from "recoil";
+import TokenManager from "./utils/tokenManager";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<MainPage />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/token" element={<TokenManager />} />
                     </Routes>
                 </BrowserRouter>
             </RecoilRoot>

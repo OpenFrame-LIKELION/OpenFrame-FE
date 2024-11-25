@@ -4,17 +4,19 @@ import LoginKakao from "../assets/svg/login-kakao.svg?react";
 import NodeSlider from "../components/Common/NodeSlider";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginState } from "../shared/recoil/authAtom";
 import { useEffect, useState } from "react";
+import { UserAtom } from "../shared/recoil/UserAtom";
 
 function LoginPage() {
     const navigate = useNavigate();
-    const [login, setLogin] = useRecoilState(loginState);
+    const [userState] = useRecoilState(UserAtom);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
 
+    console.log(userState);
+
     useEffect(() => {
-        if (login) {
+        if (userState.isLogin) {
             navigate("/");
         } else {
             // 1초 후 애니메이션 시작
@@ -28,7 +30,7 @@ function LoginPage() {
                 setIsCompleted(true);
             }, 4000); // 애니메이션 시간이 1.5초이므로 2.5초 후 완료
         }
-    }, [login, navigate]);
+    }, [userState.isLogin, navigate]);
 
     return (
         <Container>
@@ -39,7 +41,9 @@ function LoginPage() {
             >
                 <LogoBig />
             </LogoWrapper>
-            <FadeInWrapper isCompleted={isCompleted || isAnimating}>
+            <FadeInWrapper
+                iscompleted={isCompleted || isAnimating ? "true" : "false"}
+            >
                 <p>Think Out of Frame</p>
                 <NodeSlider />
                 <LoginKakao
@@ -106,7 +110,7 @@ const LogoWrapper = styled.div`
 const FadeInWrapper = styled.div`
     margin-top: 90px;
     transition: opacity 3s ease;
-    opacity: ${(props) => (props.isCompleted ? 1 : 0)};
+    opacity: ${(props) => (props.iscompleted === "true" ? 1 : 0)};
 
     display: flex;
     flex-direction: column;

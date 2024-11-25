@@ -6,22 +6,22 @@ import TreeGraph from "../components/Graph/TreeGraph";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginState } from "../shared/recoil/authAtom";
 import useTreeGraph from "../hooks/useTreeGraph";
 import Loading from "../components/Common/Loading";
+import { UserAtom } from "../shared/recoil/UserAtom";
 
 const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
-    const [login] = useRecoilState(loginState);
+    const [userState] = useRecoilState(UserAtom);
     const navigate = useNavigate();
     const { draw, nodes, links, addChildNode, setNodes } =
         useTreeGraph(selectedNode);
 
     useEffect(() => {
-        if (!login) {
+        if (!userState.isLogin) {
             navigate("/login");
         }
-    }, [login, navigate]);
+    }, [userState.isLogin, navigate]);
 
     return draw ? (
         <>

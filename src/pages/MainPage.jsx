@@ -14,7 +14,7 @@ const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [userState] = useRecoilState(UserAtom);
     const navigate = useNavigate();
-    const { draw, nodes, links, addChildNode, setNodes } =
+    const { nodes, links, nodeLoaded, addChildNode, setNodes } =
         useTreeGraph(selectedNode);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const MainPage = () => {
         }
     }, [userState.isLogin, navigate]);
 
-    return draw ? (
+    return nodeLoaded ? (
         <>
             <Logo>
                 <LogoIcon color="#1D4ED8" />

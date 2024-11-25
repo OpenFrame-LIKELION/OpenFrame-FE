@@ -1,8 +1,4 @@
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { UserAtom } from "../shared/recoil/UserAtom";
-
-const [userState, setUserState] = useRecoilState(UserAtom);
 
 // Axios instance 생성
 const api = axios.create({
@@ -13,7 +9,11 @@ const api = axios.create({
 // Request interceptor: 인증 헤더 추가
 api.interceptors.request.use(
     (request) => {
-        const accessToken = userState.accessToken;
+        let recoilState = localStorage.getItem("recoil-persist");
+        if (recoilState !== null) {
+            recoilState = JSON.parse(recoilState);
+        }
+        const accessToken = recoilState.UserAtom.accessToken;
         if (accessToken) {
             request.headers["Authorization"] = `Bearer ${accessToken}`;
         }
@@ -31,10 +31,7 @@ api.interceptors.response.use(
     },
     async (error) => {
         if (error.response?.stauts === 401) {
-            setUserState((prev) => ({
-                ...prev,
-                islogin: false,
-            }));
+            localStorage.setItem("recoil-persist", null);
             window.location.href = "/login";
         }
         return Promise.reject(error);

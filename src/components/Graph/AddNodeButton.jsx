@@ -1,6 +1,7 @@
 import { Group, Image, Rect, Text } from "react-konva";
 import useImage from "use-image";
 import add from "../../assets/svg/add.svg";
+import { useState } from "react";
 
 const AddNodeButton = ({
     node,
@@ -9,14 +10,24 @@ const AddNodeButton = ({
     setMemoedNode,
 }) => {
     const [addImage] = useImage(add);
+    const [isGenerating, setIsGenerating] = useState(false);
     return (
         <Group
             id="selected"
-            onClick={() => {
-                addChildNode();
+            onClick={async () => {
+                if (!isGenerating) {
+                    setIsGenerating(true); // 버튼 중복 클릭 방지
+                    const success = await addChildNode(node); // 비동기 작업 대기
+                    setIsGenerating(!success); // 성공 여부에 따라 상태 업데이트
+                }
             }}
             onMouseEnter={(e) => {
-                e.target.getStage().container().style.cursor = "pointer";
+                if (isGenerating) {
+                    e.target.getStage().container().style.cursor =
+                        "not-allowed";
+                } else {
+                    e.target.getStage().container().style.cursor = "pointer";
+                }
             }}
             onMouseLeave={(e) => {
                 e.target.getStage().container().style.cursor = "default";

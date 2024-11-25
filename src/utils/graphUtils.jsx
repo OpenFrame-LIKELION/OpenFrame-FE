@@ -1,5 +1,6 @@
 import CustomNode from "../components/Graph/CustomNode";
 import NodeLine from "../components/Graph/NodeLine";
+import Node from "../config/Node";
 
 const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
@@ -173,6 +174,77 @@ const printNodes = ({
     ));
 };
 
+const serializeNodes = async (nodes) => {
+    return nodes.map((node) => ({
+        id: node.id,
+        text: node.text,
+        parentId: node.parent ? node.parent.id : null,
+        childrenIds: node.children
+            ? node.children.map((child) => child.id)
+            : [],
+        checked: node.checked,
+        memo: node.memo,
+    }));
+};
+
+const deserializeNodes = async (storedNodes) => {
+    const idMap = {}; // ID로 노드를 매핑하기 위한 Map
+
+    // 노드 객체를 먼저 생성
+    const nodes = storedNodes.map(({ id, text, checked, memo }) => {
+        const node = new Node(id, text, 0, 0, 0, 0, null, []);
+        node.checked = checked;
+        node.memo = memo;
+        idMap[id] = node;
+        return node;
+    });
+
+    // 부모-자식 관계를 재구성
+    storedNodes.forEach(({ id, parentId, childrenIds }) => {
+        const node = idMap[id];
+        if (parentId) {
+            node.parent = idMap[parentId];
+            const parent = idMap[parentId];
+
+            // 중복 자식 추가 방지
+            if (!parent.children.some((child) => child.id === id)) {
+                parent.addChild(node);
+            }
+        }
+
+        // 중복 자식 ID 추가 방지
+        node.children = childrenIds
+            .filter(
+                (childId) =>
+                    !node.children.some((child) => child.id === childId)
+            )
+            .map((childId) => idMap[childId]);
+    });
+
+    return nodes;
+};
+
+const serializeLinks = async (links) => {
+    return links
+        .filter(({ source, target }) => source && target)
+        .map(({ source, target }) => ({
+            source: source.id,
+            target: target.id,
+        }));
+};
+
+const deserializeLinks = async (nodes, storedLinks) => {
+    const idMap = nodes.reduce((acc, node) => {
+        acc[node.id] = node;
+        return acc;
+    }, {});
+
+    return storedLinks.map(({ source, target }) => ({
+        source: idMap[source],
+        target: idMap[target],
+    }));
+};
+
 export {
     calculateNodeSize,
     repositionNodes,
@@ -182,4 +254,8 @@ export {
     initContext,
     connectNodes,
     printNodes,
+    serializeNodes,
+    deserializeNodes,
+    serializeLinks,
+    deserializeLinks,
 };

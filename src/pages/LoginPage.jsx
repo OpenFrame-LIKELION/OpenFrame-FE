@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { LogoBig } from "../assets/icon/Icons";
 import LoginKakao from "../assets/svg/login-kakao.svg?react";
 import NodeSlider from "../components/Common/NodeSlider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { UserAtom } from "../shared/recoil/UserAtom";
@@ -12,8 +12,6 @@ function LoginPage() {
     const [userState] = useRecoilState(UserAtom);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
-
-    console.log(userState);
 
     useEffect(() => {
         if (userState.isLogin) {
@@ -49,7 +47,7 @@ function LoginPage() {
                 <LoginKakao
                     style={{ marginTop: "90px" }}
                     onClick={() => {
-                        setLogin(true);
+                        location.href = import.meta.env.VITE_OAUTH_KAKAO_URL;
                     }}
                     cursor={"pointer"}
                 />

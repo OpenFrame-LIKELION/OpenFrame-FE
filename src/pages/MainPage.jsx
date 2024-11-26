@@ -11,6 +11,7 @@ import Loading from "../components/Common/Loading";
 import { UserAtom } from "../shared/recoil/UserAtom";
 import useZoomAndPan from "../hooks/useZoomAndPan";
 import { debounce } from "lodash";
+import { initNodesWidth, resizeNodeWidth } from "../utils/graphUtils";
 
 const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
@@ -55,7 +56,7 @@ const MainPage = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    return isReady ? (
+    return nodeLoaded ? (
         <div>
             <Logo>
                 <LogoIcon color="#1D4ED8" />
@@ -83,6 +84,7 @@ const MainPage = () => {
                 handleWheel={handleWheel}
                 handleFocusNode={handleFocusNode}
                 context={context}
+                isReady={isReady}
             />
         </div>
     ) : (

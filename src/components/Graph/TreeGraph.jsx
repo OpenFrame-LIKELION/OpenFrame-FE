@@ -16,6 +16,7 @@ function TreeGraph({
     position,
     handleWheel,
     context,
+    isReady,
 }) {
     const [hoveredNode, setHoveredNode] = useState(null);
     const [memoedNode, setMemoedNode] = useState(null);
@@ -44,19 +45,21 @@ function TreeGraph({
                 setSelectedNode={setSelectedNode}
                 setMemoedNode={setMemoedNode}
             />
-            <PresentationLayer
-                nodes={nodes}
-                links={links}
-                hoveredNode={hoveredNode}
-                memoedNode={memoedNode}
-                selectedNode={selectedNode}
-                setNodes={setNodes}
-                setHoveredNode={setHoveredNode}
-                setMemoedNode={setMemoedNode}
-                setSelectedNode={setSelectedNode}
-                addChildNode={addChildNode}
-                context={context}
-            />
+            {isReady && (
+                <PresentationLayer
+                    nodes={nodes}
+                    links={links}
+                    hoveredNode={hoveredNode}
+                    memoedNode={memoedNode}
+                    selectedNode={selectedNode}
+                    setNodes={setNodes}
+                    setHoveredNode={setHoveredNode}
+                    setMemoedNode={setMemoedNode}
+                    setSelectedNode={setSelectedNode}
+                    addChildNode={addChildNode}
+                    context={context}
+                />
+            )}
         </Stage>
     );
 }

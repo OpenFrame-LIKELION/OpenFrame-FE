@@ -50,12 +50,10 @@ const useTreeGraph = (selectedNode) => {
 
                 if (storedNodes) {
                     await deserializeNodes(storedNodes).then((rootNodes) => {
-                        console.log(rootNodes);
                         nodes.push(...rootNodes);
                     });
                     await deserializeLinks(nodes, storedLinks).then(
                         (deserializedLinks) => {
-                            console.log(deserializedLinks);
                             links.push(...deserializedLinks);
                         }
                     );
@@ -116,25 +114,6 @@ const useTreeGraph = (selectedNode) => {
 
             index++;
         }
-
-        // for (let i = 0; i < 5; i++) {
-        //     const newChild = new Node(
-        //         newNodes.length + 1,
-        //         `관련/중립/반대 문장 ${i + 1}`,
-        //         selectedNode.x + selectedNode.width + 20,
-        //         selectedNode.y + selectedNode.height + 20 * (i + 1),
-        //         100,
-        //         50,
-        //         selectedNode,
-        //         []
-        //     );
-
-        //     resizeNodeWidth(newChild);
-        //     selectedNode.addChild(newChild);
-
-        //     newNodes.push(newChild);
-        //     newLinks.push({ source: selectedNode, target: newChild });
-        // }
 
         repositionNodes(selectedNode, 0, null);
 

@@ -97,13 +97,13 @@ const resizeNodeWidth = (node) => {
         let lines = Math.ceil(node.textWidth / maxWidth);
         node.textWidth = node.isRoot() ? maxWidth - 15 : maxWidth;
         node.height =
-            Math.floor(
-                context.measureText(node.text).actualBoundingBoxAscent * lines
-            ) + 50;
+            (context.measureText(node.text).actualBoundingBoxAscent * lines +
+                35) *
+            1.3;
     } else {
         node.height = 50;
     }
-    node.width = node.isRoot() ? node.textWidth : node.textWidth + 23;
+    node.width = node.isRoot() ? node.textWidth : node.textWidth + 50;
 };
 
 const initNodesWidth = (nodes) => {

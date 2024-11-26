@@ -90,7 +90,7 @@ const CustomNode = ({
                 />
                 {!node.isRoot() && (
                     <Image
-                        x={node.x + node.textWidth - 4}
+                        x={node.x + node.width - 15.22 - 15}
                         y={node.y + node.height / 2 - 7.61}
                         image={node.checked ? on : off}
                         width={15.22}

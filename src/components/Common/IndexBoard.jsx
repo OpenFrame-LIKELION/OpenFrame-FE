@@ -7,7 +7,7 @@ import Right from "../../assets/svg/right.svg?react";
 import Logo from "../../assets/svg/logo.svg?react";
 import { useRecoilState } from "recoil";
 import { UserAtom } from "../../shared/recoil/UserAtom";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
     const [userState, setUserState] = useRecoilState(UserAtom);
     const user = jwtDecode(userState.accessToken);
     user.name = user.name || user.email.split("@")[0];
-    const location = useLocation();
+    const navigate = useNavigate();
 
     const itemsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +72,7 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
                                 refreshToken: "",
                                 isLogin: false,
                             });
-                            location.href = "/";
+                            navigate("/login");
                         }}
                     >
                         <Exit /> 로그아웃

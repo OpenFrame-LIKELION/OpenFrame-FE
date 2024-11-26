@@ -81,7 +81,6 @@ const moveChildren = (node, dx, dy) => {
 };
 
 const resizeNodeWidth = (node, context) => {
-    console.log("triggered");
     const maxWidth = node.isRoot() ? 400 : 377;
     node.textWidth = context.measureText(node.text).width + 30;
     if (node.textWidth > maxWidth) {

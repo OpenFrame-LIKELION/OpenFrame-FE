@@ -58,8 +58,8 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
     return (
         <Container>
             <LeftSection>
-                <Logo />
                 <div className="user-info">
+                    <Logo />
                     <div className="name">{user.name} 님</div>
                     <div>{user.email}</div>
                     <div>카카오 계정 로그인</div>
@@ -107,7 +107,7 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
                         </NodeContainer>
                     ))}
                 </NodeWrapper>
-                {filteredNodes.length > itemsPerPage && (
+                {
                     <div className="index">
                         <Left
                             width={12.35}
@@ -123,7 +123,7 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
                             onClick={() => handlePageChange("next")}
                         />
                     </div>
-                )}
+                }
             </RightSection>
 
             {isModalOpen && (
@@ -162,11 +162,13 @@ const Container = styled.div`
     width: calc(100dvw - 300px);
 
     min-width: 500px;
+    min-height: 262.38px;
 `;
 
 const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     line-height: 1.3;
     letter-spacing: calc(-0.03em);
     font-size: 12px;
@@ -179,15 +181,13 @@ const LeftSection = styled.div`
     }
 
     .user-info {
-        margin-top: 20px;
-
         div {
             margin-top: 5px;
         }
 
         .name {
             font-size: 15px;
-            margin-top: 0;
+            margin-top: 20px;
             margin-bottom: 10px;
         }
     }

@@ -10,6 +10,7 @@ import useTreeGraph from "../hooks/useTreeGraph";
 import Loading from "../components/Common/Loading";
 import { UserAtom } from "../shared/recoil/UserAtom";
 import useZoomAndPan from "../hooks/useZoomAndPan";
+import { debounce } from "lodash";
 
 const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
@@ -33,6 +34,16 @@ const MainPage = () => {
             setIsReady(true);
         }
     }, [nodeLoaded]);
+
+    const handleResize = debouncec(() => {
+        stageRef.current.width(window.innerWidth);
+        stageRef.current.height(window.innerHeight);
+    }, 200);
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    });
 
     return isReady ? (
         <div>

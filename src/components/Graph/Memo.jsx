@@ -1,7 +1,7 @@
 import { Group, Image, Rect, Text } from "react-konva";
 import useImage from "use-image";
 import addWhite from "../../assets/svg/add-white.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Html } from "react-konva-utils";
 
 const canvas = document.createElement("canvas");
@@ -16,6 +16,10 @@ const Memo = ({ index, node, memoedNode, setMemoedNode }) => {
     const [addWhiteImage] = useImage(addWhite);
     const [isEditing, setIsEditing] = useState(false);
     const [memoText, setMemoText] = useState(node.memo || "");
+
+    useEffect(() => {
+        resizeMemoWidth(node, memoText);
+    }, []);
 
     const handleMemoClick = () => {
         setMemoedNode(node);

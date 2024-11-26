@@ -95,7 +95,6 @@ const resizeNodeWidth = (node) => {
     context.fontWeight = "600";
     context.letterSpacing = "-1.0px";
     context.lineHeight = 1.3;
-    console.log("resize" + node.text);
     const maxWidth = node.isRoot() ? 400 : 377;
     node.textWidth = context.measureText(node.text).width + 30;
     if (node.textWidth > maxWidth) {

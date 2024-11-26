@@ -60,8 +60,6 @@ const CustomNode = ({
         setNodes([...nodes]);
     }, [isEditing, node.text, node.memo]);
 
-    console.log(nodes[nodes.length - 1]);
-
     return (
         <Group key={`node-${index}`}>
             <Group

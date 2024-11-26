@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { LogoBig } from "../assets/icon/Icons";
 import LoginKakao from "../assets/svg/login-kakao.svg?react";
 import NodeSlider from "../components/Common/NodeSlider";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { UserAtom } from "../shared/recoil/UserAtom";

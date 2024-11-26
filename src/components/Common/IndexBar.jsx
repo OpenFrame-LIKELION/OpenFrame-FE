@@ -4,7 +4,7 @@ import { useState } from "react";
 import IndexBoard from "./IndexBoard";
 import { BackLayer } from "../../config/theme";
 
-const IndexBar = ({ selectedNodeId, nodes, setNodes }) => {
+const IndexBar = ({ nodes, setNodes }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleContainerClick = () => {
@@ -20,15 +20,13 @@ const IndexBar = ({ selectedNodeId, nodes, setNodes }) => {
                         <span>Index</span>
                     </IndexLogo>
                     <Divider />
-                    <span>Thesis Count: {selectedNodeId || 0}</span>
+                    <span>Thesis Count: {nodes.length - 1}</span>
                 </Container>
-                {
-                    <IndexBoard
-                        nodes={nodes}
-                        setNodes={setNodes}
-                        isExpanded={isExpanded}
-                    />
-                }
+                <IndexBoard
+                    nodes={nodes}
+                    setNodes={setNodes}
+                    isExpanded={isExpanded}
+                />
             </Wrapper>
         </>
     );
@@ -46,18 +44,19 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
 
     font-size: ${({ theme }) => theme.fonts.english.semiBold.size};
     font-weight: ${({ theme }) => theme.fonts.english.semiBold.weight};
     color: #444751;
     line-height: 1.3;
-    letter-spacing: calc(-0.07em);
+    letter-spacing: calc(-0.03em);
 
     transform: ${({ $isExpanded }) =>
         $isExpanded
             ? "translateY(0px) translateX(-50%);"
             : "translateY(330px) translateX(-50%);"};
+
+    gap: ${({ $isExpanded }) => ($isExpanded ? "40px" : "80px")};
 
     transition: transform 0.3s;
 `;

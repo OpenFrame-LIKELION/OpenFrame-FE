@@ -94,9 +94,6 @@ const resizeNodeWidth = (node, context) => {
         node.height = 50;
     }
     node.width = node.isRoot() ? node.textWidth : node.textWidth + 50;
-    if (node.width < 130) {
-        node.width = 130;
-    }
 };
 
 const initNodesWidth = (nodes, context) => {

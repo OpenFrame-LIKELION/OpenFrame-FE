@@ -6,6 +6,7 @@ const SearchBar = ({ nodes, setSelectedNode, handleFocusNode }) => {
     const [searchValue, setSearchValue] = useState("");
     const [searchResultOpen, setSearchResultOpen] = useState(false);
     const containerRef = useRef(null);
+    const isKorean = (text) => /[가-힣]/.test(text);
 
     const handleSearch = (e) => {
         setSearchValue(e.target.value);
@@ -44,6 +45,7 @@ const SearchBar = ({ nodes, setSelectedNode, handleFocusNode }) => {
                     placeholder="Search"
                     value={searchValue}
                     onChange={handleSearch}
+                    $isKorean={isKorean(searchValue)}
                 />
             </SearchBox>
             {searchResultOpen &&
@@ -84,10 +86,12 @@ const Container = styled.div`
 
     input,
     div {
-        font-size: ${({ theme }) => theme.fonts.english.semiBold.size};
-        font-weight: ${({ theme }) => theme.fonts.english.semiBold.weight};
+        font-family: "Gothic A1", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
         color: #444751;
         line-height: 1.3;
+        letter-spacing: calc(-0.03em);
     }
 `;
 
@@ -104,10 +108,12 @@ const SearchBox = styled.div`
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 4px 10.3px rgba(0, 0, 0, 0.07);
     backdrop-filter: blur(5px);
+    letter-spacing: ${(props) => (props.$isKorean ? "-0.07em" : "-0.03em")};
 `;
 
 const ResultBox = styled(SearchBox)`
     cursor: pointer;
+    letter-spacing: calc(-0.07em);
 
     &:hover {
         box-shadow: 0px 4px 10.3px rgba(0, 0, 0, 0.2);

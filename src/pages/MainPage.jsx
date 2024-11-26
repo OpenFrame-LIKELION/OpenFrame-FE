@@ -11,7 +11,6 @@ import Loading from "../components/Common/Loading";
 import { UserAtom } from "../shared/recoil/UserAtom";
 import useZoomAndPan from "../hooks/useZoomAndPan";
 import { debounce } from "lodash";
-import { initNodesWidth, resizeNodeWidth } from "../utils/graphUtils";
 
 const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
@@ -68,11 +67,7 @@ const MainPage = () => {
                     handleFocusNode={handleFocusNode}
                 />
             </Logo>
-            <IndexBar
-                selectedNodeId={selectedNode ? selectedNode.id : null}
-                nodes={nodes}
-                setNodes={setNodes}
-            />
+            <IndexBar nodes={nodes} setNodes={setNodes} />
             <TreeGraph
                 selectedNode={selectedNode}
                 setSelectedNode={setSelectedNode}

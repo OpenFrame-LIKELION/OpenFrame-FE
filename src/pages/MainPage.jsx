@@ -35,7 +35,7 @@ const MainPage = () => {
         }
     }, [nodeLoaded]);
 
-    const handleResize = debouncec(() => {
+    const handleResize = debounce(() => {
         stageRef.current.width(window.innerWidth);
         stageRef.current.height(window.innerHeight);
     }, 200);

@@ -31,7 +31,7 @@ function LoginPage() {
     }, [userState.isLogin, navigate]);
 
     return (
-        <Container>
+        <Container isAnimating={isAnimating} isCompleted={isCompleted}>
             <LogoWrapper
                 className={
                     isCompleted ? "completed" : isAnimating ? "animate" : ""
@@ -64,8 +64,12 @@ const Container = styled.div`
     padding: 0;
     width: 100dvw;
     height: 100dvh;
-    background-color: #f4f8fd;
-    background-image: radial-gradient(#d9d9d9 10%, transparent 0);
+    background-color: ${(props) =>
+        props.isAnimating || props.isCompleted ? "#f4f8fd" : "#ffffff"};
+    background-image: ${(props) =>
+        props.isAnimating || props.isCompleted
+            ? "radial-gradient(#d9d9d9 10%, transparent 0)"
+            : "none"};
     background-position: 0 0, 10px 10px;
     background-size: 20px 20px;
 
@@ -91,23 +95,25 @@ const Container = styled.div`
 
 const LogoWrapper = styled.div`
     position: fixed;
-    bottom: 503px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
     transition: all 3s ease;
     display: flex;
     justify-content: center;
     align-items: center;
 
     &.animate {
-        transform: scale(0.68) translateY(-360px);
+        transform: translate(-50%, -320px) scale(0.68);
     }
 
     &.completed {
-        transform: scale(0.68) translateY(-360px);
+        transform: translate(-50%, -320px) scale(0.68);
     }
 `;
 
 const FadeInWrapper = styled.div`
-    margin-top: 90px;
+    margin-top: 120px;
     transition: opacity 3s ease;
     opacity: ${(props) => (props.iscompleted === "true" ? 1 : 0)};
 

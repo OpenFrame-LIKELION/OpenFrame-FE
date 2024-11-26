@@ -10,7 +10,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <RecoilRoot>
-                <BrowserRouter basename="/page">
+                <BrowserRouter basename="/page/">
                     <Routes>
                         <Route path="/" element={<MainPage />} />
                         <Route path="/login" element={<LoginPage />} />

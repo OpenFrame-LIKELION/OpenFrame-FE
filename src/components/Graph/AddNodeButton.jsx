@@ -22,28 +22,25 @@ const AddNodeButton = ({
                 }
             }}
             onMouseEnter={(e) => {
-                if (isGenerating) {
-                    e.target.getStage().container().style.cursor =
-                        "not-allowed";
-                } else {
-                    e.target.getStage().container().style.cursor = "pointer";
-                }
+                e.target.getStage().container().style.cursor = "pointer";
             }}
             onMouseLeave={(e) => {
                 e.target.getStage().container().style.cursor = "default";
             }}
         >
-            <Image
-                x={node.x + node.width + 10}
-                y={node.y + node.height / 2 - 6}
-                image={addImage}
-                width={12}
-                height={12}
-            />
+            {!isGenerating && (
+                <Image
+                    x={node.x + node.width + 10}
+                    y={node.y + node.height / 2 - 6}
+                    image={addImage}
+                    width={12}
+                    height={12}
+                />
+            )}
             <Text
                 x={node.x + node.width + 27}
                 y={node.y + node.height / 2 - 7}
-                text={"명제 추가 생성"}
+                text={isGenerating ? "생성 중..." : "명제 추가 생성"}
                 fontSize={12}
                 fontFamily="Gothic A1"
                 fontStyle="600"

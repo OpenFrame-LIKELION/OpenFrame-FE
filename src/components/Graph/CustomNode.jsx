@@ -42,7 +42,6 @@ const CustomNode = ({
     const handleInputChange = (e) => {
         node.text = e.target.value;
         setText(e.target.value);
-        setNodes([...nodes]);
     };
 
     const handleKeyDown = (e) => {
@@ -60,7 +59,8 @@ const CustomNode = ({
         if (isEditing) {
             resizeNodeWidth(node);
         }
-    }, [isEditing, node.text]);
+        setNodes([...nodes]);
+    }, [isEditing, node.text, node.memo]);
 
     return (
         <Group key={`node-${index}`}>
@@ -92,6 +92,16 @@ const CustomNode = ({
                     }
                     fill="transparent"
                 />
+                {node.memo && node !== hoveredNode && !node.isRoot() && (
+                    <Rect
+                        x={node.x + 3}
+                        y={node.y + node.height - 15}
+                        width={node.width - 3}
+                        height={20}
+                        fill="#d9d9d9"
+                        cornerRadius={10}
+                    />
+                )}
                 <Rect
                     x={node.x}
                     y={node.y}
@@ -109,6 +119,7 @@ const CustomNode = ({
                     }
                     shadowOpacity={1}
                 />
+
                 {!isEditing ? (
                     <Text
                         x={node.x + 15}

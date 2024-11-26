@@ -24,12 +24,16 @@ const MainPage = () => {
     }, [userState.isLogin, navigate]);
 
     return nodeLoaded ? (
-        <>
+        <div>
             <Logo>
                 <LogoIcon color="#1D4ED8" />
                 <SearchBar />
             </Logo>
-            <IndexBar selectedNodeId={selectedNode ? selectedNode.id : null} />
+            <IndexBar
+                selectedNodeId={selectedNode ? selectedNode.id : null}
+                nodes={nodes}
+                setNodes={setNodes}
+            />
             <TreeGraph
                 selectedNode={selectedNode}
                 setSelectedNode={setSelectedNode}
@@ -38,7 +42,7 @@ const MainPage = () => {
                 addChildNode={addChildNode}
                 setNodes={setNodes}
             />
-        </>
+        </div>
     ) : (
         <Loading />
     );

@@ -41,7 +41,9 @@ const MainPage = () => {
     useEffect(() => {
         if (nodeLoaded) {
             handleFocusNode(nodes[0]);
-            setIsReady(true);
+            setTimeout(() => {
+                setIsReady(true);
+            }, 100);
         }
     }, [nodeLoaded]);
 

@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import useTreeGraph from "../hooks/useTreeGraph";
 import Loading from "../components/Common/Loading";
 import { UserAtom } from "../shared/recoil/UserAtom";
+import useZoomAndPan from "../hooks/useZoomAndPan";
 
 const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
@@ -16,6 +17,8 @@ const MainPage = () => {
     const navigate = useNavigate();
     const { nodes, links, nodeLoaded, addChildNode, setNodes } =
         useTreeGraph(selectedNode);
+    const { stageRef, scale, position, handleWheel, handleFocusNode } =
+        useZoomAndPan();
 
     useEffect(() => {
         if (!userState.isLogin) {
@@ -27,7 +30,11 @@ const MainPage = () => {
         <div>
             <Logo>
                 <LogoIcon color="#1D4ED8" />
-                <SearchBar />
+                <SearchBar
+                    nodes={nodes}
+                    setSelectedNode={setSelectedNode}
+                    handleFocusNode={handleFocusNode}
+                />
             </Logo>
             <IndexBar
                 selectedNodeId={selectedNode ? selectedNode.id : null}
@@ -41,6 +48,10 @@ const MainPage = () => {
                 links={links}
                 addChildNode={addChildNode}
                 setNodes={setNodes}
+                stageRef={stageRef}
+                scale={scale}
+                position={position}
+                handleWheel={handleWheel}
             />
         </div>
     ) : (

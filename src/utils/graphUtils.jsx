@@ -94,7 +94,7 @@ const resizeNodeWidth = (node) => {
     const maxWidth = node.isRoot() ? 400 : 377;
     node.textWidth = context.measureText(node.text).width + 30;
     if (node.textWidth > maxWidth) {
-        let lines = Math.ceil(node.textWidth / maxWidth);
+        let lines = Math.ceil((node.textWidth * 1.1) / maxWidth);
         node.textWidth = node.isRoot() ? maxWidth - 15 : maxWidth;
         node.height =
             (context.measureText(node.text).actualBoundingBoxAscent * lines +

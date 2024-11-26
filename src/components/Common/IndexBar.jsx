@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { BookmarkIcon } from "../../assets/icon/Icons";
 import { useState } from "react";
 import IndexBoard from "./IndexBoard";
+import { BackLayer } from "../../config/theme";
 
 const IndexBar = ({ selectedNodeId, nodes, setNodes }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -12,7 +13,7 @@ const IndexBar = ({ selectedNodeId, nodes, setNodes }) => {
     return (
         <>
             {isExpanded && <BackLayer onClick={() => setIsExpanded(false)} />}
-            <Wrapper isExpanded={isExpanded}>
+            <Wrapper $isExpanded={isExpanded}>
                 <Container onClick={handleContainerClick}>
                     <IndexLogo>
                         <BookmarkIcon />
@@ -21,26 +22,19 @@ const IndexBar = ({ selectedNodeId, nodes, setNodes }) => {
                     <Divider />
                     <span>Thesis Count: {selectedNodeId || 0}</span>
                 </Container>
-                <IndexBoard
-                    nodes={nodes}
-                    setNodes={setNodes}
-                    isExpanded={isExpanded}
-                />
+                {
+                    <IndexBoard
+                        nodes={nodes}
+                        setNodes={setNodes}
+                        isExpanded={isExpanded}
+                    />
+                }
             </Wrapper>
         </>
     );
 };
 
 export default IndexBar;
-
-const BackLayer = styled.div`
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 9;
-`;
 
 const Wrapper = styled.div`
     position: absolute;
@@ -60,8 +54,8 @@ const Wrapper = styled.div`
     line-height: 1.3;
     letter-spacing: calc(-0.07em);
 
-    transform: ${({ isExpanded }) =>
-        isExpanded
+    transform: ${({ $isExpanded }) =>
+        $isExpanded
             ? "translateY(0px) translateX(-50%);"
             : "translateY(330px) translateX(-50%);"};
 

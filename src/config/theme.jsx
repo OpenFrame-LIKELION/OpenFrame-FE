@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 const theme = {
     default: {
         fontFamily: "Gothic A1",
@@ -35,5 +37,14 @@ const theme = {
         },
     },
 };
+
+export const BackLayer = styled.div`
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+`;
 
 export default theme;

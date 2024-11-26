@@ -32,6 +32,7 @@ const CustomNode = ({
                         setHoveredNode(node);
                         node.parent && repositionNodes(node.parent, 0, node);
                     }
+                    console.log(node.x, node.y);
                 }}
                 onMouseLeave={() => {
                     if (!memoedNode) {

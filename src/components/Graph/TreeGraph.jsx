@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Stage } from "react-konva";
 
-import useZoomAndPan from "../../hooks/useZoomAndPan";
 import BackGroundLayer from "./BackGroundLayer";
 import PresentationLayer from "./PresentationLayer";
 
@@ -12,10 +11,13 @@ function TreeGraph({
     links,
     addChildNode,
     setNodes,
+    stageRef,
+    scale,
+    position,
+    handleWheel,
 }) {
     const [hoveredNode, setHoveredNode] = useState(null);
     const [memoedNode, setMemoedNode] = useState(null);
-    const { stageRef, scale, position, handleWheel } = useZoomAndPan();
 
     return (
         <Stage

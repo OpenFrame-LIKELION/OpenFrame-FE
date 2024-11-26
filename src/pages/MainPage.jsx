@@ -36,8 +36,7 @@ const MainPage = () => {
     }, [nodeLoaded]);
 
     const handleResize = debounce(() => {
-        stageRef.current.width(window.innerWidth);
-        stageRef.current.height(window.innerHeight);
+        setNodes([...nodes]);
     }, 200);
 
     useEffect(() => {

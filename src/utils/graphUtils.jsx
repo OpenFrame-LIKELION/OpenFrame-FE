@@ -2,16 +2,6 @@ import CustomNode from "../components/Graph/CustomNode";
 import NodeLine from "../components/Graph/NodeLine";
 import Node from "../config/Node";
 
-const canvas = document.createElement("canvas");
-const context = canvas.getContext("2d");
-
-const initContext = () => {
-    context.font = "15px 'Gothic A1'"; // 텍스트 크기와 스타일을 설정
-    context.fontWeight = "600";
-    context.letterSpacing = "-1.0px";
-    context.lineHeight = 1.3;
-};
-
 const calculateNodeSize = (node, hoveredNode) => {
     let childrenHeight = 0;
     let maxWidth = -1;
@@ -90,11 +80,7 @@ const moveChildren = (node, dx, dy) => {
     }
 };
 
-const resizeNodeWidth = (node) => {
-    context.font = "15px 'Gothic A1'"; // 텍스트 크기와 스타일을 설정
-    context.fontWeight = "600";
-    context.letterSpacing = "-1.0px";
-    context.lineHeight = 1.3;
+const resizeNodeWidth = (node, context) => {
     const maxWidth = node.isRoot() ? 400 : 377;
     node.textWidth = context.measureText(node.text).width + 30;
     if (node.textWidth > maxWidth) {
@@ -113,9 +99,9 @@ const resizeNodeWidth = (node) => {
     }
 };
 
-const initNodesWidth = (nodes) => {
+const initNodesWidth = (nodes, context) => {
     for (let i = 0; i < nodes.length; i++) {
-        resizeNodeWidth(nodes[i]);
+        resizeNodeWidth(nodes[i], context);
     }
 };
 
@@ -162,6 +148,7 @@ const printNodes = ({
     setMemoedNode,
     setSelectedNode,
     addChildNode,
+    context,
 }) => {
     return nodes.map((node, i) => (
         <CustomNode
@@ -177,6 +164,7 @@ const printNodes = ({
             memoedNode={memoedNode}
             addChildNode={addChildNode}
             selectedNode={selectedNode}
+            context={context}
         />
     ));
 };
@@ -258,7 +246,6 @@ export {
     moveChildren,
     initNodesWidth,
     resizeNodeWidth,
-    initContext,
     connectNodes,
     printNodes,
     serializeNodes,

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Exit from "../../assets/svg/exit.svg?react";
 import Settings from "../../assets/svg/settings.svg?react";
-import userPofile from "../../assets/svg/profile.png";
 import Toggle from "../../assets/svg/toggle-on.svg?react";
 import Left from "../../assets/svg/left.svg?react";
 import Right from "../../assets/svg/right.svg?react";
@@ -59,7 +58,6 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
     return (
         <Container>
             <LeftSection>
-                {/* <img src={userPofile} alt="User Profile" /> */}
                 <Logo />
                 <div className="user-info">
                     <div className="name">{user.name} 님</div>

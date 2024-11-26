@@ -12,6 +12,7 @@ const PresentationLayer = ({
     setMemoedNode,
     setSelectedNode,
     addChildNode,
+    context,
 }) => {
     return (
         <Layer>
@@ -26,6 +27,7 @@ const PresentationLayer = ({
                 setMemoedNode,
                 setSelectedNode,
                 addChildNode,
+                context,
             })}
         </Layer>
     );

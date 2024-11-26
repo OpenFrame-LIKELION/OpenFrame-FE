@@ -3,7 +3,6 @@ import Node from "../config/Node";
 import {
     deserializeLinks,
     deserializeNodes,
-    initContext,
     initNodesWidth,
     repositionNodes,
     resizeNodeWidth,
@@ -12,7 +11,7 @@ import {
 } from "../utils/graphUtils";
 import { getChats } from "../apis/chatApi";
 
-const useTreeGraph = (selectedNode) => {
+const useTreeGraph = (selectedNode, context) => {
     const [nodes, setNodes] = useState([]);
     const [nodeLoaded, setNodeLoaded] = useState(false);
     const [links, setLinks] = useState([]);
@@ -31,8 +30,7 @@ const useTreeGraph = (selectedNode) => {
 
     useEffect(() => {
         const parent = new Node(1, "", 0, 0, 0, 0, null, []);
-        initContext();
-        resizeNodeWidth(parent);
+        resizeNodeWidth(parent, context);
 
         setTimeout(() => {
             setDraw(true);
@@ -71,7 +69,7 @@ const useTreeGraph = (selectedNode) => {
                     nodes.push(parent);
                 }
 
-                initNodesWidth(nodes);
+                initNodesWidth(nodes, context);
 
                 for (const node of nodes) {
                     repositionNodes(node, 0, null);
@@ -106,7 +104,7 @@ const useTreeGraph = (selectedNode) => {
                 []
             );
 
-            resizeNodeWidth(newChild);
+            resizeNodeWidth(newChild, context);
             selectedNode.addChild(newChild);
 
             newNodes.push(newChild);

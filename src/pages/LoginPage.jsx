@@ -47,7 +47,8 @@ function LoginPage() {
                 <LoginKakao
                     style={{ marginTop: "90px" }}
                     onClick={() => {
-                        location.href = import.meta.env.VITE_OAUTH_KAKAO_URL;
+                        location.href =
+                            "https://openframe.link/oauth2/authorization/kakao";
                     }}
                     cursor={"pointer"}
                 />

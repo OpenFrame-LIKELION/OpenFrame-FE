@@ -12,12 +12,21 @@ import { UserAtom } from "../shared/recoil/UserAtom";
 import useZoomAndPan from "../hooks/useZoomAndPan";
 import { debounce } from "lodash";
 
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d");
+context.font = "15px 'Gothic A1'"; // 텍스트 크기와 스타일을 설정
+context.fontWeight = "600";
+context.letterSpacing = "-1.0px";
+context.lineHeight = 1.3;
+
 const MainPage = () => {
     const [selectedNode, setSelectedNode] = useState(null);
     const [userState] = useRecoilState(UserAtom);
     const navigate = useNavigate();
-    const { nodes, links, nodeLoaded, addChildNode, setNodes } =
-        useTreeGraph(selectedNode);
+    const { nodes, links, nodeLoaded, addChildNode, setNodes } = useTreeGraph(
+        selectedNode,
+        context
+    );
     const { stageRef, scale, position, handleWheel, handleFocusNode } =
         useZoomAndPan();
     const [isReady, setIsReady] = useState(false);
@@ -36,13 +45,15 @@ const MainPage = () => {
     }, [nodeLoaded]);
 
     const handleResize = debounce(() => {
-        setNodes([...nodes]);
+        stageRef.current.width(window.innerWidth);
+        stageRef.current.height(window.innerHeight);
     }, 200);
 
     useEffect(() => {
         window.addEventListener("resize", handleResize);
+
         return () => window.removeEventListener("resize", handleResize);
-    });
+    }, []);
 
     return isReady ? (
         <div>
@@ -71,6 +82,7 @@ const MainPage = () => {
                 position={position}
                 handleWheel={handleWheel}
                 handleFocusNode={handleFocusNode}
+                context={context}
             />
         </div>
     ) : (
@@ -79,8 +91,6 @@ const MainPage = () => {
 };
 
 export default MainPage;
-
-const Container = styled.div``;
 
 const Logo = styled.div`
     position: absolute;

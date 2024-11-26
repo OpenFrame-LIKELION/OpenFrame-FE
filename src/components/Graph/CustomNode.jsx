@@ -9,9 +9,6 @@ import Memo from "./Memo";
 import { useEffect, useState } from "react";
 import { Html } from "react-konva-utils";
 
-const canvas = document.createElement("canvas");
-const context = canvas.getContext("2d");
-
 const CustomNode = ({
     index,
     node,
@@ -24,6 +21,7 @@ const CustomNode = ({
     memoedNode,
     addChildNode,
     selectedNode,
+    context,
 }) => {
     const [on] = useImage(toggleOn);
     const [off] = useImage(toggleOff);
@@ -57,10 +55,12 @@ const CustomNode = ({
 
     useEffect(() => {
         if (isEditing) {
-            resizeNodeWidth(node);
+            resizeNodeWidth(node, context);
         }
         setNodes([...nodes]);
     }, [isEditing, node.text, node.memo]);
+
+    console.log(nodes[nodes.length - 1]);
 
     return (
         <Group key={`node-${index}`}>
@@ -119,7 +119,6 @@ const CustomNode = ({
                     }
                     shadowOpacity={1}
                 />
-
                 {!isEditing ? (
                     <Text
                         x={node.x + 15}

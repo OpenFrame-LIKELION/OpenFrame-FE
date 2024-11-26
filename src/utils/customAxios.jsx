@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios instance 생성
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: "https://openframe.link/v1/api",
     timeout: 10000,
 });
 

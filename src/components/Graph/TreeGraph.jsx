@@ -15,6 +15,7 @@ function TreeGraph({
     scale,
     position,
     handleWheel,
+    context,
 }) {
     const [hoveredNode, setHoveredNode] = useState(null);
     const [memoedNode, setMemoedNode] = useState(null);
@@ -54,6 +55,7 @@ function TreeGraph({
                 setMemoedNode={setMemoedNode}
                 setSelectedNode={setSelectedNode}
                 addChildNode={addChildNode}
+                context={context}
             />
         </Stage>
     );

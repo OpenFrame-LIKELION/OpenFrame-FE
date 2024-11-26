@@ -19,6 +19,7 @@ const MainPage = () => {
         useTreeGraph(selectedNode);
     const { stageRef, scale, position, handleWheel, handleFocusNode } =
         useZoomAndPan();
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         if (!userState.isLogin) {
@@ -26,7 +27,14 @@ const MainPage = () => {
         }
     }, [userState.isLogin, navigate]);
 
-    return nodeLoaded ? (
+    useEffect(() => {
+        if (nodeLoaded) {
+            handleFocusNode(nodes[0]);
+            setIsReady(true);
+        }
+    }, [nodeLoaded]);
+
+    return isReady ? (
         <div>
             <Logo>
                 <LogoIcon color="#1D4ED8" />
@@ -52,6 +60,7 @@ const MainPage = () => {
                 scale={scale}
                 position={position}
                 handleWheel={handleWheel}
+                handleFocusNode={handleFocusNode}
             />
         </div>
     ) : (
@@ -60,6 +69,8 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const Container = styled.div``;
 
 const Logo = styled.div`
     position: absolute;

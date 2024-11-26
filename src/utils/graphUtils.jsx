@@ -91,6 +91,11 @@ const moveChildren = (node, dx, dy) => {
 };
 
 const resizeNodeWidth = (node) => {
+    context.font = "15px 'Gothic A1'"; // 텍스트 크기와 스타일을 설정
+    context.fontWeight = "600";
+    context.letterSpacing = "-1.0px";
+    context.lineHeight = 1.3;
+    console.log("resize" + node.text);
     const maxWidth = node.isRoot() ? 400 : 377;
     node.textWidth = context.measureText(node.text).width + 30;
     if (node.textWidth > maxWidth) {
@@ -104,6 +109,9 @@ const resizeNodeWidth = (node) => {
         node.height = 50;
     }
     node.width = node.isRoot() ? node.textWidth : node.textWidth + 50;
+    if (node.width < 130) {
+        node.width = 130;
+    }
 };
 
 const initNodesWidth = (nodes) => {

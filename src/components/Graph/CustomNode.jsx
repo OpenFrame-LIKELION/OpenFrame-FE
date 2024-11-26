@@ -3,9 +3,14 @@ import useImage from "use-image";
 
 import toggleOn from "../../assets/svg/toggle-on.svg";
 import toggleOff from "../../assets/svg/toggle-off.svg";
-import { repositionNodes } from "../../utils/graphUtils";
+import { repositionNodes, resizeNodeWidth } from "../../utils/graphUtils";
 import AddNodeButton from "./AddNodeButton";
 import Memo from "./Memo";
+import { useEffect, useState } from "react";
+import { Html } from "react-konva-utils";
+
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d");
 
 const CustomNode = ({
     index,
@@ -23,6 +28,40 @@ const CustomNode = ({
     const [on] = useImage(toggleOn);
     const [off] = useImage(toggleOff);
 
+    const [isEditing, setIsEditing] = useState(false);
+    const [text, setText] = useState(
+        node.text === "반응형 주제 문장" ? "" : node.text
+    );
+
+    const handleNodeClick = () => {
+        if (node.isRoot() && node.children.length === 0) {
+            setIsEditing(true);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        node.text = e.target.value;
+        setText(e.target.value);
+        setNodes([...nodes]);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            setIsEditing(false);
+        }
+    };
+
+    const handleBlur = () => {
+        setIsEditing(false);
+    };
+
+    useEffect(() => {
+        if (isEditing) {
+            resizeNodeWidth(node);
+        }
+    }, [isEditing, node.text]);
+
     return (
         <Group key={`node-${index}`}>
             <Group
@@ -32,7 +71,6 @@ const CustomNode = ({
                         setHoveredNode(node);
                         node.parent && repositionNodes(node.parent, 0, node);
                     }
-                    console.log(node.x, node.y);
                 }}
                 onMouseLeave={() => {
                     if (!memoedNode) {
@@ -71,24 +109,72 @@ const CustomNode = ({
                     }
                     shadowOpacity={1}
                 />
-                <Text
-                    x={node.x + 15}
-                    y={node.y}
-                    text={node.text}
-                    fontSize={15}
-                    fontFamily="Gothic A1"
-                    fontStyle="600"
-                    lineHeight={1.3}
-                    letterSpacing={-1.0}
-                    fill={node.isRoot() ? "#FFFFFF" : "#444751"}
-                    verticalAlign="middle"
-                    width={node.textWidth}
-                    height={node.height}
-                    onClick={() => {
-                        setSelectedNode(node);
-                        setMemoedNode(null);
-                    }}
-                />
+                {!isEditing ? (
+                    <Text
+                        x={node.x + 15}
+                        y={node.y}
+                        text={node.text}
+                        fontSize={15}
+                        fontFamily="Gothic A1"
+                        fontStyle="600"
+                        lineHeight={1.3}
+                        letterSpacing={-1.0}
+                        fill={node.isRoot() ? "#FFFFFF" : "#444751"}
+                        verticalAlign="middle"
+                        width={node.textWidth}
+                        height={node.height}
+                        onClick={() => {
+                            setSelectedNode(node);
+                            setMemoedNode(null);
+                            handleNodeClick();
+                        }}
+                    />
+                ) : (
+                    <Html
+                        groupProps={{
+                            x: node.x,
+                            y: node.y,
+                        }}
+                        divProps={{
+                            style: { opacity: 1, pointerEvents: "auto" },
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: `${node.width - 13}px`,
+                                height: `${node.height - 28}px`,
+                                background: "#1D4ED8",
+                                borderRadius: "10px",
+                                padding: "13px  0px 15px 13px",
+                            }}
+                        >
+                            <textarea
+                                value={text}
+                                onChange={handleInputChange}
+                                onKeyDown={handleKeyDown}
+                                onBlur={handleBlur}
+                                style={{
+                                    fontSize: "15px",
+                                    fontFamily: "Gothic A1",
+                                    fontWeight: "600",
+                                    lineHeight: "1.3",
+                                    letterSpacing: "-1.0px",
+                                    color: "white",
+                                    background: "transparent",
+                                    outline: "none",
+                                    resize: "none",
+                                    border: "none",
+                                    width: "100%",
+                                    height: "100%",
+                                    margin: "0",
+                                    overflow: "hidden", // 스크롤바 제거
+                                    wordBreak: "keep-all",
+                                }}
+                                autoFocus
+                            />
+                        </div>
+                    </Html>
+                )}
                 {!node.isRoot() && (
                     <Image
                         x={node.x + node.width - 15.22 - 15}

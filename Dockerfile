@@ -22,7 +22,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 # Copy built files to Nginx for serving
 COPY --from=base /app/dist /usr/share/nginx/html/page
 
-# Expose port 80 for Nginx
+# Expose port 3000 for Nginx
 EXPOSE 3000
 
 # Start Nginx

@@ -72,6 +72,8 @@ const IndexBoard = ({ nodes, setNodes, isExpanded }) => {
                                 refreshToken: "",
                                 isLogin: false,
                             });
+                            localStorage.removeItem("nodes");
+                            localStorage.removeItem("links");
                             navigate("/login");
                         }}
                     >

@@ -126,10 +126,8 @@ const ResetButton = styled.button`
 
     // hover 시 svg 180도 회전
     &:hover {
-        // 누르는 효과
-        transform: scale(0.9);
         svg {
-            transform: rotate(180deg);
+            transform: rotate(-180deg);
         }
     }
 `;
